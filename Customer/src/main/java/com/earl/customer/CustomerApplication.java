@@ -1,5 +1,7 @@
 package com.earl.customer;
 
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -35,11 +37,16 @@ public class CustomerApplication {
 			log.info("");
 
 			// fetch an individual customer by ID
-			Customer customer = repository.findById(1L);
-			log.info("Customer found with findById(1L):");
-			log.info("--------------------------------");
-			log.info(customer.toString());
-			log.info("");
+			{
+				long[] indices = { 1L, -1L };
+				for (long l : indices) {
+					Optional<Customer> customer = repository.findById(l);
+					log.info("Customer found with findById(" + l + "):");
+					log.info("--------------------------------");
+					log.info(customer.isPresent() ? customer.get().toString() : "not found!");
+					log.info("");
+				}
+			}
 
 			// fetch customers by last name
 			log.info("Customer found with findByLastName('Bauer'):");
